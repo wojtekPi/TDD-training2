@@ -19,4 +19,5 @@ public class StringCalculatorTest {
     public void shouldCreateObject() throws Exception {
         assertThat(testedObject).isNotNull();
     }
+
 }
