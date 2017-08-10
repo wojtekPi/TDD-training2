@@ -56,10 +56,4 @@ public class StringCalculatorTest {
         int result = testedObject.Add("1,\n");
         assertThat(result).isEqualTo(1);
     }
-
-    @Test
-    public void shouldReturnSumWhenNewDifferentDelimiters() throws Exception {
-        int result = testedObject.Add("//;\\n1;2");
-        assertThat(result).isEqualTo(1);
-    }
 }
