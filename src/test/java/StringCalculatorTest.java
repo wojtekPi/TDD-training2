@@ -1,3 +1,4 @@
+import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -18,5 +19,48 @@ public class StringCalculatorTest {
     @Test
     public void shouldCreateObject() throws Exception {
         assertThat(testedObject).isNotNull();
+    }
+
+    @Test
+    public void shouldReturnZeroWhenEmptyStringPassed() {
+        int result = testedObject.Add("");
+       // Assert.assertEquals(result,0);
+        assertThat(result).isEqualTo(0);
+    }
+
+    @Test
+    public void shouldReturnOneWhenOnePassed() {
+        int result = testedObject.Add("1");
+        assertThat(result).isEqualTo(1);
+    }
+
+    @Test
+    public void shouldReturnTwoWhenTwoPassed() {
+        int result = testedObject.Add("2");
+        assertThat(result).isEqualTo(2);
+    }
+
+    @Test
+    public void returnsThreeWhenOneAndTwoPassed() {
+        int result = testedObject.Add("1,2");
+        assertThat(result).isEqualTo(3);
+    }
+
+    @Test
+    public void returnsSixWhenOneAndTwoAndThreePassed() {
+        int result = testedObject.Add("1,2,3");
+        assertThat(result).isEqualTo(6);
+    }
+
+    @Test
+    public void returnsZeroWhenOneAndTwoAndMinusOneAndMinusTwo() {
+        int result = testedObject.Add("1,2,-1,-2");
+        assertThat(result).isEqualTo(0);
+    }
+
+    @Test
+    public void returnsSixWhenOneAndTwoAndThreeAndOtherStringsPassed() {
+        int result = testedObject.Add("1\n2,3");
+        assertThat(result).isEqualTo(6);
     }
 }
