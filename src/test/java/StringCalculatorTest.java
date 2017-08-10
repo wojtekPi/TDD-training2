@@ -66,9 +66,16 @@ public class StringCalculatorTest {
 
     }
 
-//    @Test
-//    public void shouldReturnTenWhen_7h3Passed() {
-//        int result = testedObject.Add("7h3");
-//        assertThat(result).isEqualTo(10);
-//    }
+    @Test
+    public void shouldReturnTenWhen_7h3Passed() {
+        int result = testedObject.Add("7h3");
+        assertThat(result).isEqualTo(10);
+    }
+
+    @Test
+    public void shouldReturnTenWhen1hf_coma_dot_3ds6Passed() {
+        int result = testedObject.Add("1h,.3ds6");
+        assertThat(result).isEqualTo(10);
+    }
+
 }

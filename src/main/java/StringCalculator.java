@@ -2,17 +2,23 @@
 public class StringCalculator {
     public int Add(String input) {
 
-
-
-
         if (input.length() >3){
-            String [] ar = input.split(",");
+            String [] ar = input.split("\\D+");
             int sum = 0;
             for (int i = 0; i < ar.length; i++){
                 sum += Integer.parseInt(ar[i]);
             }
             return sum;
         }
+
+//        if (input.length() >3){
+//            String [] ar = input.split(",");
+//            int sum = 0;
+//            for (int i = 0; i < ar.length; i++){
+//                sum += Integer.parseInt(ar[i]);
+//            }
+//            return sum;
+//        }
 
         if (input.length() == 3){
             int d = Integer.parseInt(input.substring(0,1));
