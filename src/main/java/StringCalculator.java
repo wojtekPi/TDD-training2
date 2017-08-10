@@ -7,13 +7,12 @@ public class StringCalculator {
         if(input.length()==0){
             return 0;
         }
-        String[] pattern = input.split(",");
+        String[] pattern = input.split("[,.\\s+;:]");
         int result = 0;
 
         for(int i =0; i < pattern.length; i++){
             result += Integer.parseInt(pattern[i]);
         }
-
         return result;
     }
 }

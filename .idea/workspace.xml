@@ -2,7 +2,9 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="2dcf459f-a993-4244-9de6-3c61a7ce8303" name="Default" comment="">
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/java/StringCalculator.java" afterPath="$PROJECT_DIR$/src/main/java/StringCalculator.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/test/java/StringCalculatorTest.java" afterPath="$PROJECT_DIR$/src/test/java/StringCalculatorTest.java" />
     </list>
     <ignored path="$PROJECT_DIR$/target/" />
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
@@ -14,21 +16,21 @@
   </component>
   <component name="FileEditorManager">
     <leaf>
-      <file leaf-file-name="StringCalculator.java" pinned="false" current-in-tab="true">
+      <file leaf-file-name="StringCalculator.java" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/main/java/StringCalculator.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="136">
-              <caret line="8" column="9" lean-forward="false" selection-start-line="8" selection-start-column="9" selection-end-line="8" selection-end-column="9" />
+            <state relative-caret-position="153">
+              <caret line="9" column="49" lean-forward="false" selection-start-line="9" selection-start-column="49" selection-end-line="9" selection-end-column="49" />
               <folding />
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="StringCalculatorTest.java" pinned="false" current-in-tab="false">
+      <file leaf-file-name="StringCalculatorTest.java" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/src/test/java/StringCalculatorTest.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="272">
-              <caret line="44" column="39" lean-forward="false" selection-start-line="44" selection-start-column="39" selection-end-line="44" selection-end-column="39" />
+            <state relative-caret-position="255">
+              <caret line="43" column="41" lean-forward="false" selection-start-line="43" selection-start-column="41" selection-end-line="43" selection-end-column="41" />
               <folding />
             </state>
           </provider>
@@ -47,8 +49,8 @@
   <component name="IdeDocumentHistory">
     <option name="CHANGED_PATHS">
       <list>
-        <option value="$PROJECT_DIR$/src/test/java/StringCalculatorTest.java" />
         <option value="$PROJECT_DIR$/src/main/java/StringCalculator.java" />
+        <option value="$PROJECT_DIR$/src/test/java/StringCalculatorTest.java" />
       </list>
     </option>
   </component>
@@ -358,32 +360,32 @@
     <servers />
   </component>
   <component name="TestHistory">
-    <history-entry file="StringCalculatorTest_shouldReturnOneWhenOnePassed - 2017.08.10 at 19h 20m 46s.xml">
-      <configuration name="StringCalculatorTest.shouldReturnOneWhenOnePassed" configurationId="JUnit" />
-    </history-entry>
     <history-entry file="StringCalculatorTest_shouldReturnTwoWhenMorePassed - 2017.08.10 at 19h 38m 14s.xml">
       <configuration name="StringCalculatorTest.shouldReturnTwoWhenMorePassed" configurationId="JUnit" />
     </history-entry>
-    <history-entry file="StringCalculatorTest_shouldReturnTwoWhenTwoPassed - 2017.08.10 at 19h 19m 35s.xml">
-      <configuration name="StringCalculatorTest.shouldReturnTwoWhenTwoPassed" configurationId="JUnit" />
+    <history-entry file="StringCalculatorTest_shouldReturnTwoWhenMorePassed - 2017.08.10 at 20h 01m 11s.xml">
+      <configuration name="StringCalculatorTest.shouldReturnTwoWhenMorePassed" configurationId="JUnit" />
     </history-entry>
-    <history-entry file="StringCalculatorTest_shouldReturnTwoWhenTwoPassed - 2017.08.10 at 19h 31m 30s.xml">
-      <configuration name="StringCalculatorTest.shouldReturnTwoWhenTwoPassed" configurationId="JUnit" />
+    <history-entry file="StringCalculatorTest_shouldReturnTwoWhenMorePassed - 2017.08.10 at 20h 02m 18s.xml">
+      <configuration name="StringCalculatorTest.shouldReturnTwoWhenMorePassed" configurationId="JUnit" />
     </history-entry>
-    <history-entry file="StringCalculatorTest_shouldReturnTwoWhenTwoPassed - 2017.08.10 at 19h 31m 45s.xml">
-      <configuration name="StringCalculatorTest.shouldReturnTwoWhenTwoPassed" configurationId="JUnit" />
+    <history-entry file="StringCalculatorTest_shouldReturnTwoWhenMorePassed - 2017.08.10 at 20h 02m 29s.xml">
+      <configuration name="StringCalculatorTest.shouldReturnTwoWhenMorePassed" configurationId="JUnit" />
     </history-entry>
-    <history-entry file="StringCalculatorTest_shouldReturnTwoWhenTwoPassed - 2017.08.10 at 19h 33m 05s.xml">
-      <configuration name="StringCalculatorTest.shouldReturnTwoWhenTwoPassed" configurationId="JUnit" />
+    <history-entry file="StringCalculatorTest_shouldReturnTwoWhenMorePassed - 2017.08.10 at 20h 02m 55s.xml">
+      <configuration name="StringCalculatorTest.shouldReturnTwoWhenMorePassed" configurationId="JUnit" />
     </history-entry>
-    <history-entry file="StringCalculatorTest_shouldReturnTwoWhenTwoPassed - 2017.08.10 at 19h 33m 30s.xml">
-      <configuration name="StringCalculatorTest.shouldReturnTwoWhenTwoPassed" configurationId="JUnit" />
+    <history-entry file="StringCalculatorTest_shouldReturnTwoWhenMorePassed - 2017.08.10 at 20h 03m 06s.xml">
+      <configuration name="StringCalculatorTest.shouldReturnTwoWhenMorePassed" configurationId="JUnit" />
     </history-entry>
-    <history-entry file="StringCalculatorTest_shouldReturnTwoWhenTwoPassed - 2017.08.10 at 19h 33m 49s.xml">
-      <configuration name="StringCalculatorTest.shouldReturnTwoWhenTwoPassed" configurationId="JUnit" />
+    <history-entry file="StringCalculatorTest_shouldReturnTwoWhenMorePassed - 2017.08.10 at 20h 03m 13s.xml">
+      <configuration name="StringCalculatorTest.shouldReturnTwoWhenMorePassed" configurationId="JUnit" />
     </history-entry>
-    <history-entry file="StringCalculatorTest_shouldReturnTwoWhenTwoPassed - 2017.08.10 at 19h 36m 14s.xml">
-      <configuration name="StringCalculatorTest.shouldReturnTwoWhenTwoPassed" configurationId="JUnit" />
+    <history-entry file="StringCalculatorTest_shouldReturnTwoWhenMorePassed - 2017.08.10 at 20h 03m 21s.xml">
+      <configuration name="StringCalculatorTest.shouldReturnTwoWhenMorePassed" configurationId="JUnit" />
+    </history-entry>
+    <history-entry file="StringCalculatorTest_shouldReturnTwoWhenMorePassed - 2017.08.10 at 20h 05m 47s.xml">
+      <configuration name="StringCalculatorTest.shouldReturnTwoWhenMorePassed" configurationId="JUnit" />
     </history-entry>
     <history-entry file="StringCalculatorTest_shouldReturnTwoWhenTwoPassed - 2017.08.10 at 19h 37m 40s.xml">
       <configuration name="StringCalculatorTest.shouldReturnTwoWhenTwoPassed" configurationId="JUnit" />
@@ -463,18 +465,18 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/test/java/StringCalculatorTest.java">
+    <entry file="file://$PROJECT_DIR$/src/main/java/StringCalculator.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="272">
-          <caret line="44" column="39" lean-forward="false" selection-start-line="44" selection-start-column="39" selection-end-line="44" selection-end-column="39" />
+        <state relative-caret-position="153">
+          <caret line="9" column="49" lean-forward="false" selection-start-line="9" selection-start-column="49" selection-end-line="9" selection-end-column="49" />
           <folding />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/StringCalculator.java">
+    <entry file="file://$PROJECT_DIR$/src/test/java/StringCalculatorTest.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="136">
-          <caret line="8" column="9" lean-forward="false" selection-start-line="8" selection-start-column="9" selection-end-line="8" selection-end-column="9" />
+        <state relative-caret-position="255">
+          <caret line="43" column="41" lean-forward="false" selection-start-line="43" selection-start-column="41" selection-end-line="43" selection-end-column="41" />
           <folding />
         </state>
       </provider>

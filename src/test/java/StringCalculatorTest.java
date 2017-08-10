@@ -41,7 +41,7 @@ public class StringCalculatorTest {
 
     @Test
     public void shouldReturnTwoWhenMorePassed() throws Exception {
-        int result = testedObject.Add("1,2,5,3");
+        int result = testedObject.Add("1;2,5 3");
         assertThat(result).isEqualTo(11);
     }
 }
