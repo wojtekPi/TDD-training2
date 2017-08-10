@@ -2,6 +2,7 @@ import org.junit.Before;
 import org.junit.Test;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.junit.Assert.assertEquals;
 
 /**
  * Tdd training on 09.08.17.
@@ -19,4 +20,24 @@ public class StringCalculatorTest {
     public void shouldCreateObject() throws Exception {
         assertThat(testedObject).isNotNull();
     }
+
+    @Test
+    public void shouldReturnZeroWhenEmptyStringPassed(){
+       int result = testedObject.Add("");
+       assertThat(result).isEqualTo(0);
+    }
+
+    @Test
+    public void shoudReturnOneWhenOnePassed() throws Exception {
+        int result = testedObject.Add("1");
+        assertThat(result).isEqualTo(1);
+    }
+
+    @Test
+    public void shoudReturnTwoWhenTwoPassed() throws Exception {
+        int result = testedObject.Add("1,2");
+        assertThat(result).isEqualTo(3);
+    }
+
+
 }
