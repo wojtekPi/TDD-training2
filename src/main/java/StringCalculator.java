@@ -1,5 +1,7 @@
 import java.util.ArrayList;
 import java.util.List;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 public class StringCalculator {
 
@@ -11,17 +13,27 @@ public class StringCalculator {
         if(arg.equals("1")) return 1;
         if(arg.equals("2")) return 2;
 
-        String[] elements = arg.split(",");
+        String pattern = "(\\d+) [, \\n]*";
+        Pattern p = Pattern.compile(pattern);
+        Matcher m = p.matcher(arg);
 
-        for(String el: elements){
-            try {
-                elInt = Integer.parseInt(el);
-            }catch (Exception e){
-            }
-            addingResult+=elInt;
-
+        while(m.find()){
+            elInt = Integer.parseInt(m.toString());
+            addingResult +=elInt;
         }
         return addingResult;
+
+//        String[] elements = arg.split(",");
+//
+//        for(String el: elements){
+//            try {
+//                elInt = Integer.parseInt(el);
+//            }catch (Exception e){
+//            }
+//            addingResult+=elInt;
+//
+//        }
+//        return addingResult;
 
     }
 
