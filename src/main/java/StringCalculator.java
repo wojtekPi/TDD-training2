@@ -14,7 +14,7 @@ public class StringCalculator {
         for (int i=0;i < A.length; i++) {
             sum += Integer.parseInt(A[i]);
         }
-            return sum+1;
+            return sum;
 
     }
 }
