@@ -35,9 +35,24 @@ public class StringCalculatorTest {
     }
 
     @Test
-    public void shouldReturnTwoWhenTwoPassed() throws Exception {
-        int result = testedObject.Add("2");
+    public void shouldReturnThreeWhenOneAndTwoPassed() throws Exception {
+        int result = testedObject.Add("1,2");
 
-        assertThat(result).isEqualTo(2);
+        assertThat(result).isEqualTo(3);
+    }
+
+    @Test
+    public void shouldReturnTenWhenRandomNumsPassed() throws Exception {
+        int result = testedObject.Add("1,3,5,1");
+
+        assertThat(result).isEqualTo(10);
+    }
+
+    @Test
+    public void shouldReturnSixWhen() throws Exception {
+        int result = testedObject.Add("1,2," +
+                "3");
+
+        assertThat(result).isEqualTo(6);
     }
 }

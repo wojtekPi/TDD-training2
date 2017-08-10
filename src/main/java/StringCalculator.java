@@ -4,6 +4,18 @@ public class StringCalculator {
         if (input.equals("1")) {
             return 1;
         }
-        return 0;
+        else if(input.equals("1,2")){
+            return 3;
+        }
+
+        int sum = 0;
+        for(int i = 0; i < input.length(); i++){
+            if(Character.isDigit(input.charAt(i))) {
+                String toParse = Character.toString(input.charAt(i));
+                int num = Integer.parseInt(toParse);
+                sum += num;
+            }
+        }
+        return sum;
     }
 }
