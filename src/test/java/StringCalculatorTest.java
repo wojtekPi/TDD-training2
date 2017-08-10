@@ -1,12 +1,16 @@
+import junitparams.JUnitParamsRunner;
+import junitparams.Parameters;
 import org.junit.Before;
 import org.junit.Test;
+import org.junit.runner.RunWith;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.fail;
 
 /**
  * Tdd training on 09.08.17.
  */
+@RunWith(JUnitParamsRunner.class)
 public class StringCalculatorTest {
 
     private StringCalculator testedObject;
@@ -22,39 +26,38 @@ public class StringCalculatorTest {
     }
 
     @Test
-    public void shouldReturnZeroWhenEmptyStringPassed(){
-        int result = testedObject.Add("");
-        //assertEquals(0,result);
+    public void shouldeThrowExceptionWhenNegativePassed() throws Exception {
+        int result = 0;
+        try {
+            result = testedObject.Add("-1");
+            fail();
+        } catch (Exception e) {
+            assertThat(e.getMessage()).isEqualTo("negatives not allowed: -1");
+        }
+        assertThat(result).isNotEqualTo(-1);
         assertThat(result).isEqualTo(0);
     }
 
-    @Test
-    public void shouldReturnOneWhenOnePassed() throws Exception {
-        int result = testedObject.Add("1");
-        assertThat(result).isEqualTo(1);
+    private Object[][] parametersForCheckingResults() {
+        return new Object[][]{
+                {"", 0}, {null, 0},
+                {"0", 0}, {"1", 1}, {"3", 3},
+                {"1,2", 3},
+                {"2\n3",5},
+                {"1,2,7", 10},{"1\n2,3", 6},
+                {"//;\n1;2", 3}, {"//#\n4#7", 11},
+                {"2000,7", 7},
+                {"//[###][%^]\\n3###3%^3",9 },
+                {"//[ ][%]\\n1 2%3", 6},
+                {"//[***]\\n1***2***3", 6}
+        };
     }
 
     @Test
-    public void shouldReturnTwoWhenTwoPassed() throws Exception {
-        int result = testedObject.Add("2");
-        assertThat(result).isEqualTo(2);
+    @Parameters(method = "parametersForCheckingResults")
+    public void shoudReturnCorrectValueForSpecificInput(String input, int expectedResult) throws Exception {
+        int result = testedObject.Add(input);
+        assertThat(result).isEqualTo(expectedResult);
     }
 
-    @Test
-    public void shouldReturnThreeWhenOneAndTwoPassed() throws Exception {
-        int result = testedObject.Add("1,2");
-        assertThat(result).isEqualTo(3);
-    }
-
-    @Test
-    public void shouldReturnTenWhenOneTwoSevenPassed() throws Exception {
-        int result = testedObject.Add("1,2,7");
-        assertThat(result).isEqualTo(10);
-    }
-
-    @Test
-    public void shouldReturnSixWhenNewLineisBetwenPassed() throws Exception {
-        int result = testedObject.Add("1\n2,3");
-        assertThat(result).isEqualTo(6);
-    }
 }
