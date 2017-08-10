@@ -23,18 +23,6 @@ public class StringCalculator {
         }
         return addingResult;
 
-//        String[] elements = arg.split(",");
-//
-//        for(String el: elements){
-//            try {
-//                elInt = Integer.parseInt(el);
-//            }catch (Exception e){
-//            }
-//            addingResult+=elInt;
-//
-//        }
-//        return addingResult;
-
     }
 
 }
