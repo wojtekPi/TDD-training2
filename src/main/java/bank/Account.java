@@ -4,23 +4,31 @@ package bank;
  * Tdd training on 11.08.17.
  */
 public class Account {
-    private int id;
-    private int balanceAccount;
 
-    public Account(int id, int balanceAccount) {
+    private int id;
+    private Instrument balance;
+
+    public Account() {
+    }
+
+    public Account(int id, Instrument balance) {
         this.id = id;
-        this.balanceAccount = balanceAccount;
+        this.balance = balance;
     }
 
     public int getId() {
         return id;
     }
 
-    public int getBalanceAccount() {
-        return balanceAccount;
+    public void setId(int id) {
+        this.id = id;
     }
 
-    public void setBalanceAccount(int balanceAccount) {
-        this.balanceAccount = balanceAccount;
+    public Instrument getBalance() {
+        return balance;
+    }
+
+    public void setBalance(Instrument balance) {
+        this.balance = balance;
     }
 }

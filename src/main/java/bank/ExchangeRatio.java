@@ -6,7 +6,7 @@ package bank;
 public class ExchangeRatio {
     private int pln;
     private int usd;
-
+    private Currency currency;
 
 
     public int getPln() {
@@ -26,6 +26,7 @@ public class ExchangeRatio {
     }
 
     public int changeUSDtoPLN(int value){
+
         return value*4;
 
     }

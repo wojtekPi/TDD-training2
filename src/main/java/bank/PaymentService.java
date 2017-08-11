@@ -1,18 +1,24 @@
 package bank;
 
 /**
- * Created by RENT on 2017-08-11.
+ * Created by Filip on 2017-08-11.
  */
 public class PaymentService {
 
-    public void transferMoney(Account from, Account to, int howMany) throws AccountException {
-        if(from.getBalanceAccount()< howMany){
-            throw new AccountException("Not enough money on account");
+    public void transferMoney(Account accountOne, Account accountTwo, Instrument moneyToTransfer) {
+        if(accountOne.getBalance().getCurrency() == accountTwo.getBalance().getCurrency() &&
+                accountOne.getBalance().getCurrency() == moneyToTransfer.getCurrency()) {
+            accountOne.getBalance().setAmmount(accountOne.getBalance().getAmmount() - moneyToTransfer.getAmmount());
+            accountTwo.getBalance().setAmmount(accountTwo.getBalance().getAmmount() + moneyToTransfer.getAmmount());
+        } else{
+            throw new IllegalArgumentException("Wrong currency");
         }
 
-        from.setBalanceAccount(from.getBalanceAccount()-howMany);
-        to.setBalanceAccount(to.getBalanceAccount()+howMany);
-        System.out.println("Przelales "+howMany+"zl na konto: "+to.getId());
+        if(accountOne.getBalance().getAmmount() - moneyToTransfer.getAmmount() < -500) {
+            throw new IllegalArgumentException("I'm very sorry, but you don't have enough money...");
+        }
 
     }
+
+
 }
