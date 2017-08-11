@@ -12,9 +12,9 @@ public class StringCalculator {
         Matcher matcher = pattern.matcher(input);
 
 
-        if(!matcher.matches()) {
-            return 0;
-        }
+//        if(!matcher.matches()) {
+//            return 0;
+//        }
 
         String regex2 = "[0-9]+";
         Pattern pattern1 = Pattern.compile(regex2);
