@@ -1,5 +1,8 @@
+import junitparams.JUnitParamsRunner;
+import junitparams.Parameters;
 import org.junit.Before;
 import org.junit.Test;
+import org.junit.runner.RunWith;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static sun.nio.cs.Surrogate.is;
@@ -7,7 +10,11 @@ import static sun.nio.cs.Surrogate.is;
 /**
  * Tdd training on 09.08.17.
  */
+
+@RunWith(JUnitParamsRunner.class)
+
 public class StringCalculatorTest {
+
 
     private StringCalculator testedObject;
     int result;
@@ -39,11 +46,10 @@ public class StringCalculatorTest {
         result = testedObject.Add("2");
         assertThat(result).isEqualTo(2);
     }
-
-    public void ShouldReturnSumOfNumericalStringElements() throws Exception {
-        result = testedObject.Add("1,2,3,4,5");
-        assertThat(result).isEqualTo(15);
     }
 
 
-}
+
+
+
+
