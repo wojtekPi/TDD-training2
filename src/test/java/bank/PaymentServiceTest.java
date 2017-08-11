@@ -3,7 +3,9 @@ package bank;
 import junitparams.JUnitParamsRunner;
 import junitparams.Parameters;
 import org.junit.Before;
+import org.junit.Rule;
 import org.junit.Test;
+import org.junit.rules.ExpectedException;
 import org.junit.runner.RunWith;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -13,6 +15,9 @@ import static org.assertj.core.api.Assertions.assertThat;
  */
 @RunWith(JUnitParamsRunner.class)
 public class PaymentServiceTest {
+
+    //@Rule
+    //public ExpectedException thrown= ExpectedException.none();
 
     private PaymentService testedObject;
 
@@ -39,15 +44,45 @@ public class PaymentServiceTest {
             throws Exception {
         Account accountOne = new Account();
         accountOne.setId(1);
-        accountOne.setBalance(accountOneBalance);
+        accountOne.setBalance(new Instrument(accountOneBalance,Currency.EUR));
 
         Account accountTwo = new Account();
         accountTwo.setId(2);
-        accountTwo.setBalance(accountTwoBalance);
+        accountTwo.setBalance(new Instrument(accountTwoBalance,Currency.EUR));
 
         testedObject.transferMoney(accountOne,accountTwo,moneyToTransfer);
 
-        assertThat(accountOne.getBalance()).isEqualTo(expectedBalanceOfAccountOneAfterTransfer);
-        assertThat(accountTwo.getBalance()).isEqualTo(expectedBalanceOfAccountTwoAfterTransfer);
+        assertThat(accountOne.getBalance().getAmount()).isEqualTo(expectedBalanceOfAccountOneAfterTransfer);
+        assertThat(accountTwo.getBalance().getAmount()).isEqualTo(expectedBalanceOfAccountTwoAfterTransfer);
     }
+
+    @Test(expected = IllegalArgumentException.class)
+    public void shouldThrowExceptionWhenBalanceTooLow(){
+       // thrown.expect(IllegalArgumentException.class);
+       // thrown.expectMessage("I'm very sorry");
+        Account accountOne = new Account();
+        accountOne.setId(1);
+        accountOne.setBalance(new Instrument(0,Currency.EUR));
+
+        Account accountTwo = new Account();
+        accountTwo.setId(2);
+        accountTwo.setBalance(new Instrument(200, Currency.EUR));
+
+        testedObject.transferMoney(accountOne,accountTwo,1000);
+    }
+
+    @Test(expected = IllegalArgumentException.class)
+    public void shouldThrowExceptionWhenCurrencyAreWrong() {
+
+        Account accountOne = new Account();
+        accountOne.setId(1);
+        accountOne.setBalance(new Instrument(0,Currency.EUR));
+
+        Account accountTwo = new Account();
+        accountTwo.setId(2);
+        accountTwo.setBalance(new Instrument(200, Currency.PLN));
+
+        testedObject.transferMoney(accountOne,accountTwo,1000);
+    }
+
 }
