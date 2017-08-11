@@ -21,4 +21,9 @@ public class AccountTest {
     public void shouldCreateObject() throws Exception {
         assertThat(testedObject).isNotNull();
     }
+
+    @Test
+    public void shouldReturnBalance() throws Exception {
+        assertThat(testedObject.getBalance()).isEqualTo(0);
+    }
 }
