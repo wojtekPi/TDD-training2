@@ -5,11 +5,25 @@ package bank;
  */
 public class PaymentService {
 
-    public void transferMoney(Account accountOne, Account accountTwo, int moneyToTransfer) {
+    public void transferMoney(Account accountOne, Account accountTwo, Instrument money ) throws IllegalArgumentException {
 
-        accountOne.setBalance(accountOne.getBalance()-moneyToTransfer);
-        accountTwo.setBalance(accountTwo.getBalance()+moneyToTransfer);
+            if(!((money.getCurrency() == accountOne.getCurrency()) && (money.getCurrency() == accountTwo.getCurrency()))){
+
+                throw new IllegalArgumentException();
+            }
+
+            accountOne.setBalance(accountOne.getBalance() - money.getAmount());
+            accountTwo.setBalance(accountTwo.getBalance() + money.getAmount());
+
+            if(accountOne.getBalance()<-500){
+
+                throw new IllegalArgumentException();
+
+            }
+
+        }
     }
 
 
-}
+
+
