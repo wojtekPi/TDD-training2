@@ -6,10 +6,11 @@ package bank;
 public class PaymentService {
 
     public void transferMoney(Account accountOne, Account accountTwo, int moneyToTransfer) {
+        if ((accountOne.getBalance().getCurrency() == accountTwo.getBalance().getCurrency()) &&
+        (accountOne.getBalance().getAmount() > moneyToTransfer)) {
 
-        accountOne.setBalance(accountOne.getBalance()-moneyToTransfer);
-        accountTwo.setBalance(accountTwo.getBalance()+moneyToTransfer);
+            accountOne.getBalance().setAmount(accountOne.getBalance().getAmount()-moneyToTransfer);
+            accountTwo.getBalance().setAmount(accountTwo.getBalance().getAmount()+moneyToTransfer);
+        } else { throw new IllegalArgumentException("Bida"); }
     }
-
-
 }
