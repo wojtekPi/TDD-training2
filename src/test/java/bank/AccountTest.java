@@ -14,7 +14,7 @@ public class AccountTest {
 
     @Before
     public void setUp() throws Exception {
-        testedObject = new Account();
+        testedObject = new Account(0,0);
     }
 
     @Test
