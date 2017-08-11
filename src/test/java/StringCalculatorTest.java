@@ -60,36 +60,17 @@ public class StringCalculatorTest {
         int result = testedObject.Add("5,2,8");
         assertThat(result).isEqualTo(15);
     }
-    @Test
-    public void shouldReturn27WhenNineNineNinePassed() {
-        int result = testedObject.Add("9,9,9");
-        assertThat(result).isEqualTo(27);
-    }
-    @Test
-    public void shouldReturn100When20x5Passed() {
-        int result = testedObject.Add("20,20,20,20,20");
-        assertThat(result).isEqualTo(100);
 
-    }
-
-//    @Test
-//    public void shouldReturnTenWhen_7h3Passed() {
-//        int result = testedObject.Add("7h3");
-//        assertThat(result).isEqualTo(10);
-//    }
-//
-//    @Test
-//    public void shouldReturnTenWhen1hf_coma_dot_3ds6Passed() {
-//        int result = testedObject.Add("1h,.3ds6");
-//        assertThat(result).isEqualTo(10);
-//    }
 
     private Object[][] parameterForshouldReturnCorrectValueForSpecificInput(){
         return new Object[][]{
+                {"9,9,9",27},
+                {"20,20,20,20,20", 100},
                 {"7h3", 10},
                 {"1h,.3ds6", 10}
         };
     }
+
 
 
     @Test
