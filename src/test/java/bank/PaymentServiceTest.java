@@ -1,31 +1,75 @@
 package bank;
 
+import junitparams.JUnitParamsRunner;
+import junitparams.Parameters;
 import org.junit.Before;
 import org.junit.Test;
+import org.junit.runner.RunWith;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
+/**
+ * Created by Filip on 2017-08-11.
+ */
+@RunWith(JUnitParamsRunner.class)
 public class PaymentServiceTest {
 
-    private Account testedAccount1;
-    private Account testedAccount2;
-    private PaymentService transfer = new PaymentService();
+    private PaymentService testedObject;
 
     @Before
     public void setUp() throws Exception {
-        testedAccount1 = new Account(123456, 1000);
-        testedAccount2 = new Account(654321,3000);
+        testedObject = new PaymentService();
     }
-    @Test
-    public void shouldTransferMoneyFromOneAccountToAnother() throws Exception {
-        transfer.transferMOney(testedAccount1, testedAccount2, 100);
-        assertThat(testedAccount1.getBalance()).isEqualTo(900);
+
+    private Object[][] parametersForSpecificMoneyTransfers(){
+        return new Object[][]{
+                {100,2,new Instrument(30,Currency.EUR),70,32},
+//                {10,50,new Instrument(50,Currency.EUR),-40,100},
+        };
     }
+
+
     @Test
-    public void shouldTransferMultiMoneyFromOneAccountToAnother() throws Exception {
-        transfer.transferMOney(testedAccount1,testedAccount2,100);
-        assertThat(testedAccount1.getBalance()).isEqualTo(900);
-        transfer.transferMOney(testedAccount1,testedAccount2,100);
-        assertThat(testedAccount1.getBalance()).isEqualTo(800);
+    @Parameters(method = "parametersForSpecificMoneyTransfers")
+    public void shouldTransferMoneyFromOneAccountToAnother(int accountOneBalance, int accountTwoBalance,
+                                                           Instrument moneyToTransfer, int expectedBalanceOfAccountOneAfterTransfer, int expectedBalanceOfAccountTwoAfterTransfer)
+            throws Exception {
+        Account accountOne = new Account();
+        accountOne.setId(1);
+        accountOne.setBalance(new Instrument(100,Currency.EUR));
+        accountOne.getBalance().setAmount(accountOneBalance);
+
+        Account accountTwo = new Account();
+        accountTwo.setId(2);
+        accountTwo.setBalance(new Instrument(2,Currency.EUR));
+        accountTwo.getBalance().setAmount(accountTwoBalance);
+
+        testedObject.transferMoney(accountOne,accountTwo,moneyToTransfer);
+
+        assertThat(accountOne.getBalance().getAmount()).isEqualTo(expectedBalanceOfAccountOneAfterTransfer);
+        assertThat(accountTwo.getBalance().getAmount()).isEqualTo(expectedBalanceOfAccountTwoAfterTransfer);
+    }
+    @Test(expected = IllegalArgumentException.class)
+    public void shouldThrowExeptionWhenBalanceToLow(){
+        Account accountOne = new Account();
+        accountOne.setBalance(new Instrument(0,Currency.EUR));
+        accountOne.getBalance().setCurrency(Currency.EUR);
+
+        Account accountTwo = new Account();
+        accountTwo.setId(2);
+        accountTwo.setBalance(new Instrument(100,Currency.EUR));
+        testedObject.transferMoney(accountOne, accountTwo, new Instrument(100,Currency.EUR));
+    }
+
+    @Test(expected = IllegalArgumentException.class)
+    public void shouldThrowExeptionWhenCurrienciesAreDifferent(){
+        Account accountOne = new Account();
+        accountOne.setId(1);
+        accountOne.setBalance(new Instrument(100,Currency.EUR));
+
+        Account accountTwo = new Account();
+        accountTwo.setId(2);
+        accountTwo.setBalance(new Instrument(100,Currency.PLN));
+        testedObject.transferMoney(accountOne, accountTwo, new Instrument(100,Currency.EUR));
     }
 }
