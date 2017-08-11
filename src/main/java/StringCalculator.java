@@ -13,7 +13,7 @@ public class StringCalculator {
 
 
         if(!matcher.matches()) {
-            return 69;
+            return 0;
         }
 
         String regex2 = "[0-9]+";
