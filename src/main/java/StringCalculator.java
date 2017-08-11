@@ -1,20 +1,18 @@
-import org.assertj.core.internal.Characters;
-
 public class StringCalculator {
     public int Add(String input) {
-        if (input.equals("")) {
-            return 0;
-        } else if (input.equals("1")) {
-            return 1;
-        }
 
-        String[] words = input.split(",");
         int result = 0;
 
-        for (int i = 0; i < words.length; i++) {
-            result += Integer.parseInt(words[i]);
+
+        if (input == null || input.equals((""))) {
+            return 0;
+        }
+
+        String [] numbers = input.split("\\D");
+
+        for(int i =0; i < numbers.length; i++){
+            result += Integer.parseInt(numbers[i]);
         }
         return result;
-
     }
 }
