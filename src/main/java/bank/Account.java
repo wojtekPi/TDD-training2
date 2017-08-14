@@ -6,7 +6,7 @@ package bank;
 public class Account {
 
     private int id;
-    private int balance;
+    private Instrument balance;
 
     public int getId() {
         return id;
@@ -16,11 +16,11 @@ public class Account {
         this.id = id;
     }
 
-    public int getBalance() {
+    public Instrument getBalance() {
         return balance;
     }
 
-    public void setBalance(int balance) {
+    public void setBalance(Instrument balance) {
         this.balance = balance;
     }
 }

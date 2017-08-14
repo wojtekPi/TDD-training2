@@ -82,6 +82,29 @@ public class PaymentServiceTest {
         instrumentToTransfer.setAmount(1000);
         instrumentToTransfer.setCurrency(Currency.PLN);
 
+        testedObject.transferMoney(accountOne,accountTwo,instrumentToTransfer);
+    }
+
+    @Test(expected = IllegalArgumentException.class)
+    public void shouldThrowExceptionWhenDifferentCurrenciesTransferred(){
+
+        Account accountOne = new Account();
+        Instrument instrumentOne = new Instrument();
+        instrumentOne.setAmount(1000);
+        instrumentOne.setCurrency(Currency.PLN);
+        accountOne.setId(1);
+        accountOne.setBalance(instrumentOne);
+
+        Account accountTwo = new Account();
+        Instrument instrumentTwo = new Instrument();
+        instrumentTwo.setAmount(200);
+        instrumentTwo.setCurrency(Currency.EUR);
+        accountTwo.setId(2);
+        accountTwo.setBalance(instrumentTwo);
+
+        Instrument instrumentToTransfer = new Instrument();
+        instrumentToTransfer.setAmount(100);
+        instrumentToTransfer.setCurrency(Currency.PLN);
 
         testedObject.transferMoney(accountOne,accountTwo,instrumentToTransfer);
     }
