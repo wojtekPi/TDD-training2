@@ -9,6 +9,8 @@ public class PaymentService {
     private static final String CORRENCY_DOESN_T_MATCH = "Corrency doesn't match :(";
     private static final String NOT_ENOUGH_MONEY_MESSAGE = "I'm very sorry, but you don't have enough money...";
 
+    private ExchangeServiceI exchangeService;
+
     public void transferMoney(Account accountOne, Account accountTwo, Instrument moneyToTransfer) throws IllegalArgumentException {
 
         validatePayment(accountOne, accountTwo, moneyToTransfer);
@@ -18,13 +20,17 @@ public class PaymentService {
 
     private void doPayment(Account accountOne, Account accountTwo, Instrument moneyToTransfer) {
         accountOne.setBalance(new Instrument(calculateAmountInFirstAccount(accountOne, moneyToTransfer), moneyToTransfer.getCurrency()));
+
+
+        if (!doesCurrencyMatch(accountTwo, moneyToTransfer)){
+            moneyToTransfer = exchangeService.calculateAmount(moneyToTransfer, accountTwo.getBalance().getCurrency());
+        }
         accountTwo.setBalance(new Instrument(calculateMoneyOnSecondAmount(accountTwo, moneyToTransfer), moneyToTransfer.getCurrency()));
     }
 
     private void validatePayment(Account accountOne, Account accountTwo, Instrument moneyToTransfer) {
-        if (!doesCurrencyMatch(accountOne, accountTwo, moneyToTransfer)) {
-            throw new IllegalArgumentException(CORRENCY_DOESN_T_MATCH);
-        }
+        if(exchangeService == null && (!doesCurrencyMatch(accountOne, moneyToTransfer) || !doesCurrencyMatch(accountTwo, moneyToTransfer)))
+            throw new NullPointerException(CORRENCY_DOESN_T_MATCH);
 
         if (isEnoughMoneyOnFirstAccount(accountOne, moneyToTransfer)) {
             throw new IllegalArgumentException(NOT_ENOUGH_MONEY_MESSAGE);
@@ -32,6 +38,7 @@ public class PaymentService {
     }
 
     private int calculateMoneyOnSecondAmount(Account accountTwo, Instrument moneyToTransfer) {
+
         return accountTwo.getBalance().getAmount() + moneyToTransfer.getAmount();
     }
 
@@ -43,10 +50,15 @@ public class PaymentService {
         return calculateAmountInFirstAccount(accountOne, moneyToTransfer) < BALANCE_LIMIT;
     }
 
-    private boolean doesCurrencyMatch(Account accountOne, Account accountTwo, Instrument moneyToTransfer) {
-        return accountOne.getBalance().getCurrency() == accountTwo.getBalance().getCurrency() &&
-                accountOne.getBalance().getCurrency() == moneyToTransfer.getCurrency();
+    private boolean doesCurrencyMatch(Account account, Instrument moneyToTransfer) {
+        return account.getBalance().getCurrency() == moneyToTransfer.getCurrency();
     }
 
+    public ExchangeServiceI getExchangeService() {
+        return exchangeService;
+    }
 
+    public void setExchangeService(ExchangeServiceI exchangeService) {
+        this.exchangeService = exchangeService;
+    }
 }
