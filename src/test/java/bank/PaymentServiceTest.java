@@ -3,6 +3,7 @@ package bank;
 import junitparams.JUnitParamsRunner;
 import junitparams.Parameters;
 import org.junit.Before;
+import org.junit.Ignore;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.ExpectedException;
@@ -81,6 +82,7 @@ public class PaymentServiceTest {
         testedObject.transferMoney(accountOne, accountTwo, new Instrument(1000, PLN));
     }
 
+    @Ignore
     @Test(expected = IllegalArgumentException.class)
     public void shouldThrowExceptionWhenCurrenciesAreDifferent() throws Exception {
         Account accountOne = new Account();
@@ -96,6 +98,7 @@ public class PaymentServiceTest {
         // then no followed instructions will be reached.
     }
 
+    @Ignore
     @Test
     public void shouldNotTransferMoneyWhenCurrenciesDoesntMatch() throws Exception {
         Account accountOne = new Account();
@@ -136,5 +139,32 @@ public class PaymentServiceTest {
 
         verify(instrumentMock, never()).setAmount(anyInt());
         verify(accountOneMock, never()).setBalance(any(Instrument.class));
+    }
+
+    @Test
+    public void shoulTransferPLNfromFirstAcountToAccountWithEuro() throws Exception {
+        Account accountOne = new Account();
+        accountOne.setId(1);
+        accountOne.setBalance(new Instrument(0, Currency.PLN));
+
+        Account accountTwo = new Account();
+        accountTwo.setId(2);
+        accountTwo.setBalance(new Instrument(200, Currency.USD));
+
+        ExchangeServiceI exchangeServiceMock = mock(ExchangeServiceI.class);
+        testedObject.setExchangeService(exchangeServiceMock);
+
+        when(exchangeServiceMock.calculateAmount(any(Instrument.class), eq(Currency.USD)))
+                .thenReturn(new Instrument(30, Currency.USD));
+
+//        ExchangeServiceI exchangeServiceDummyImpl = new ExchangeServiceIImpl();
+//        testedObject.setExchangeService(exchangeServiceDummyImpl);
+
+
+        testedObject.transferMoney(accountOne, accountTwo, new Instrument(100, PLN));
+
+        assertThat(accountTwo.getBalance().getAmount()).isEqualTo(230);
+        verify(exchangeServiceMock).calculateAmount(any(Instrument.class), eq(Currency.USD));
+
     }
 }
