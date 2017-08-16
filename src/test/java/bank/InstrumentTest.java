@@ -26,6 +26,7 @@ public class InstrumentTest {
         assertThat(testedObject.getAmount()).isEqualTo(7);
     }
 
+    //#INFO: Very nice test which test our equals and hashcode method
     @Test
     public void equalsContract() {
         EqualsVerifier.forClass(Instrument.class)

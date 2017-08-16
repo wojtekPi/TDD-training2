@@ -10,8 +10,7 @@ import org.junit.runner.RunWith;
 import org.mockito.Answers;
 
 import static bank.Currency.PLN;
-import static org.assertj.core.api.Assertions.assertThat;
-import static org.assertj.core.api.Assertions.fail;
+import static org.assertj.core.api.Assertions.*;
 import static org.mockito.Mockito.*;
 
 /**
@@ -80,7 +79,6 @@ public class PaymentServiceTest {
         accountTwo.setBalance(new Instrument(200, PLN));
 
         testedObject.transferMoney(accountOne, accountTwo, new Instrument(1000, PLN));
-
     }
 
     @Test(expected = IllegalArgumentException.class)
@@ -94,6 +92,8 @@ public class PaymentServiceTest {
         accountTwo.setBalance(new Instrument(200, PLN));
 
         testedObject.transferMoney(accountOne, accountTwo, new Instrument(100, PLN));
+        //#INFO: We are not able to check  here anything. When exception is thrown,
+        // then no followed instructions will be reached.
     }
 
     @Test
@@ -127,12 +127,13 @@ public class PaymentServiceTest {
         when(accountTwoMock.getBalance().getCurrency()).thenReturn(PLN);
 
         Instrument moneyToTransfer = new Instrument(502, PLN);
-        try {
-            testedObject.transferMoney(accountOneMock, accountTwoMock, moneyToTransfer);
-        } catch (IllegalArgumentException e) {
-        } catch (Exception e) {
-            fail("WrongExceptionThrown");
-        }
+
+        //#INFO: Checking exception with AssertJ - nice  feature from assertJ 3
+        //This approach is much better than wrapping execution in try-catch block
+        assertThatExceptionOfType(IllegalArgumentException.class)
+                .isThrownBy(() -> testedObject.transferMoney(accountOneMock, accountTwoMock, moneyToTransfer))
+                .withMessage("I'm very sorry, but you don't have enough money...");
+
         verify(instrumentMock, never()).setAmount(anyInt());
         verify(accountOneMock, never()).setBalance(any(Instrument.class));
     }
