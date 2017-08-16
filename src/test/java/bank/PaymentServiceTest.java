@@ -3,6 +3,7 @@ package bank;
 import junitparams.JUnitParamsRunner;
 import junitparams.Parameters;
 import org.junit.Before;
+import org.junit.Ignore;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.ExpectedException;
@@ -14,7 +15,7 @@ import static org.assertj.core.api.Assertions.*;
 import static org.mockito.Mockito.*;
 
 /**
- * Created by Filip on 2017-08-11.
+ * Created by michal on 2017-08-11.
  */
 @RunWith(JUnitParamsRunner.class)
 public class PaymentServiceTest {
@@ -81,21 +82,30 @@ public class PaymentServiceTest {
         testedObject.transferMoney(accountOne, accountTwo, new Instrument(1000, PLN));
     }
 
-    @Test(expected = IllegalArgumentException.class)
+    @Test
     public void shouldThrowExceptionWhenCurrenciesAreDifferent() throws Exception {
-        Account accountOne = new Account();
-        accountOne.setId(1);
-        accountOne.setBalance(new Instrument(0, Currency.USD));
+        Account accountOneMock = mock(Account.class);
+        Account accountTwoMock = mock(Account.class, Answers.RETURNS_DEEP_STUBS);
+        Instrument instrumentMock = mock(Instrument.class);
 
-        Account accountTwo = new Account();
-        accountTwo.setId(2);
-        accountTwo.setBalance(new Instrument(200, PLN));
+        when(accountOneMock.getBalance()).thenReturn(instrumentMock);
+        when(instrumentMock.getAmount()).thenReturn(100);
+        when(instrumentMock.getCurrency()).thenReturn(PLN);
+        when(accountTwoMock.getBalance().getCurrency()).thenReturn(Currency.USD);
 
-        testedObject.transferMoney(accountOne, accountTwo, new Instrument(100, PLN));
-        //#INFO: We are not able to check  here anything. When exception is thrown,
-        // then no followed instructions will be reached.
+        Instrument moneyToTransfer = new Instrument(500, PLN);
+
+        assertThat(testedObject.getExchangeService()).isNull();
+
+        assertThatExceptionOfType(NullPointerException.class)
+                .isThrownBy(() -> testedObject.transferMoney(accountOneMock, accountTwoMock, moneyToTransfer));
+
+        verify(instrumentMock, never()).setAmount(anyInt());
+        verify(accountOneMock, never()).setBalance(any(Instrument.class));
+        verify(accountTwoMock, never()).setBalance(any(Instrument.class));
     }
 
+    @Ignore
     @Test
     public void shouldNotTransferMoneyWhenCurrenciesDoesntMatch() throws Exception {
         Account accountOne = new Account();
@@ -112,6 +122,29 @@ public class PaymentServiceTest {
             fail("WrongExceptionThrown");
         }
         assertThat(accountOne.getBalance().getAmount()).isEqualTo(0);
+
+    }
+
+    @Test
+    public void shouldTransferMoneyWhenWhenCurrenciesDoesntMatch(){
+        Account accountOne = new Account();
+        accountOne.setId(1);
+        accountOne.setBalance(new Instrument(0, Currency.PLN));
+
+        Account accountTwo = new Account();
+        accountTwo.setId(2);
+        accountTwo.setBalance(new Instrument(200, Currency.USD));
+
+        ExchangeServiceI exchangeServiceMock = mock(ExchangeServiceI.class);
+        testedObject.setExchangeService(exchangeServiceMock);
+
+        when(exchangeServiceMock.calculateAmount(any(Instrument.class), eq(Currency.USD)))
+                .thenReturn(new Instrument(30, Currency.USD));
+
+
+        testedObject.transferMoney(accountOne, accountTwo, new Instrument(100, PLN));
+        assertThat(accountTwo.getBalance().getAmount()).isEqualTo(230);
+        verify(exchangeServiceMock).calculateAmount(any(Instrument.class), eq(Currency.USD));
 
     }
 
