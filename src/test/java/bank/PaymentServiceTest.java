@@ -137,4 +137,27 @@ public class PaymentServiceTest {
         verify(instrumentMock, never()).setAmount(anyInt());
         verify(accountOneMock, never()).setBalance(any(Instrument.class));
     }
+
+    @Test
+    public void shoulTransferPLNfromFirstAcountToAccountWithEuro() throws Exception {
+        Account accountOne = new Account();
+        accountOne.setId(1);
+        accountOne.setBalance(new Instrument(0, Currency.PLN));
+
+        Account accountTwo = new Account();
+        accountTwo.setId(2);
+        accountTwo.setBalance(new Instrument(200, Currency.USD));
+
+        ExchangeServiceI exchangeServiceMock = mock(ExchangeServiceI.class);
+        testedObject.setExchangeService(exchangeServiceMock);
+
+        when(exchangeServiceMock.calculateAmount(any(Instrument.class), eq(Currency.USD)))
+                .thenReturn(new Instrument(30, Currency.USD));
+
+        testedObject.transferMoney(accountOne, accountTwo, new Instrument(100, PLN));
+
+        assertThat(accountTwo.getBalance().getAmount()).isEqualTo(230);
+        verify(exchangeServiceMock).calculateAmount(any(Instrument.class), eq(Currency.USD));
+
+    }
 }

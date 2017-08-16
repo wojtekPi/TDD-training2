@@ -8,6 +8,7 @@ public class PaymentService {
     private static final int BALANCE_LIMIT = -500;
     private static final String CORRENCY_DOESN_T_MATCH = "Corrency doesn't match :(";
     private static final String NOT_ENOUGH_MONEY_MESSAGE = "I'm very sorry, but you don't have enough money...";
+    private ExchangeServiceI exchangeService;
 
     public void transferMoney(Account accountOne, Account accountTwo, Instrument moneyToTransfer) throws IllegalArgumentException {
 
@@ -32,7 +33,13 @@ public class PaymentService {
     }
 
     private int calculateMoneyOnSecondAmount(Account accountTwo, Instrument moneyToTransfer) {
-        return accountTwo.getBalance().getAmount() + moneyToTransfer.getAmount();
+        Instrument moneyWhichShouldBeTransferedToSecondAccount = moneyToTransfer;
+        if (accountTwo.getBalance().getCurrency() != moneyToTransfer.getCurrency()) {
+            moneyWhichShouldBeTransferedToSecondAccount =
+                    exchangeService.calculateAmount(moneyToTransfer, accountTwo.getBalance().getCurrency());
+        }
+        return accountTwo.getBalance().getAmount()
+                + moneyWhichShouldBeTransferedToSecondAccount.getAmount();
     }
 
     private int calculateAmountInFirstAccount(Account accountOne, Instrument moneyToTransfer) {
@@ -44,9 +51,10 @@ public class PaymentService {
     }
 
     private boolean doesCurrencyMatch(Account accountOne, Account accountTwo, Instrument moneyToTransfer) {
-        return accountOne.getBalance().getCurrency() == accountTwo.getBalance().getCurrency() &&
-                accountOne.getBalance().getCurrency() == moneyToTransfer.getCurrency();
+        return accountOne.getBalance().getCurrency() == moneyToTransfer.getCurrency();
     }
 
-
+    public void setExchangeService(ExchangeServiceI exchangeService) {
+        this.exchangeService = exchangeService;
+    }
 }
