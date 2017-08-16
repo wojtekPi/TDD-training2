@@ -34,8 +34,9 @@ public class PaymentService {
     }
 
     private int calculateMoneyOnSecondAmount(Account accountTwo, Instrument moneyToTransfer) {
-//        exchangeService.calculateAmount()
-        return accountTwo.getBalance().getAmount() + moneyToTransfer.getAmount();
+        Instrument exchangedMoneyToTransfer = exchangeService.calculateAmount(moneyToTransfer, accountTwo.getBalance().getCurrency());
+
+        return accountTwo.getBalance().getAmount() + exchangedMoneyToTransfer.getAmount();
     }
 
     private int calculateAmountInFirstAccount(Account accountOne, Instrument moneyToTransfer) {
@@ -50,7 +51,6 @@ public class PaymentService {
         return accountOne.getBalance().getCurrency() == accountTwo.getBalance().getCurrency() &&
                 accountOne.getBalance().getCurrency() == moneyToTransfer.getCurrency();
     }
-
 
     public void setExchangeService(ExchangeServiceI exchangeService) {
         this.exchangeService = exchangeService;
