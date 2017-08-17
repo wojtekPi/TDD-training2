@@ -73,4 +73,31 @@ public class MockingExamplesTest {
 
         assertThat(mapMock.get("Ala")).isEqualTo("ma Kota");
     }
+
+    @Test
+    public void exampleOfSpy() throws Exception {
+        LinkedList linkedListSpy = spy(LinkedList.class);
+
+        linkedListSpy.add("Ala");
+        linkedListSpy.add("ma");
+        linkedListSpy.add("kota");
+
+        when(linkedListSpy.size()).thenReturn(500);
+
+        assertThat(linkedListSpy.get(1)).isEqualTo("ma");
+        assertThat(linkedListSpy.size()).isEqualTo(500);
+    }
+
+    @Test
+    public void exampleOfSpy2() throws Exception {
+        LinkedList linkedListSpy = spy(LinkedList.class);
+
+        linkedListSpy.add("Ala");
+
+        when(linkedListSpy.get(0)).thenReturn("Kota ma!");
+
+        assertThat(linkedListSpy.get(0)).isEqualTo("Kota ma!");
+    }
+
+
 }

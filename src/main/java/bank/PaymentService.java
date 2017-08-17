@@ -1,5 +1,7 @@
 package bank;
 
+import java.time.LocalDate;
+
 /**
  * Created by Filip on 2017-08-11.
  */
@@ -8,6 +10,10 @@ public class PaymentService {
     private static final int BALANCE_LIMIT = -500;
     private static final String NOT_ENOUGH_MONEY_MESSAGE = "I'm very sorry, but you don't have enough money...";
     private ExchangeServiceI exchangeService;
+
+    public static LocalDate getCurrentDate() {
+        return LocalDate.now();
+    }
 
     public void transferMoney(Account accountOne, Account accountTwo, Instrument moneyToTransfer) throws IllegalArgumentException {
 
