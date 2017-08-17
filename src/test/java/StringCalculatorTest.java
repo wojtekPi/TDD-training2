@@ -17,6 +17,6 @@ public class StringCalculatorTest {
 
     @Test
     public void shouldCreateObject() throws Exception {
-        assertThat(testedObject).isNotNull();
+        assertThat(testedObject).isNull();
     }
 }
