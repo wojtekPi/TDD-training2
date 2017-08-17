@@ -159,6 +159,7 @@ public class PaymentServiceTest {
 
         testedObject.transferMoney(accountOne,accountTwo, new Instrument(100, PLN));
 
+        assertThat(accountOne.getBalance().getAmount()).isEqualTo(-100);
         assertThat(accountTwo.getBalance().getAmount()).isEqualTo(230);
         verify(exchangeServiceMock).calculateAmount(any(Instrument.class), eq(Currency.USD));
     }
