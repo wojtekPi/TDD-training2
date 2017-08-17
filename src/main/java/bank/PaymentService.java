@@ -6,8 +6,19 @@ package bank;
 public class PaymentService {
 
     private static final int BALANCE_LIMIT = -500;
-    private static final String CORRENCY_DOESN_T_MATCH = "Corrency doesn't match :(";
+    private static final String CURRENCY_DOESN_T_MATCH = "Currency doesn't match :(";
     private static final String NOT_ENOUGH_MONEY_MESSAGE = "I'm very sorry, but you don't have enough money...";
+
+    private ExchangeServiceI exchangeService;
+
+    public ExchangeServiceI getExchangeService() {
+        return exchangeService;
+    }
+
+
+    public void setExchangeService(ExchangeServiceI exchangeService) {
+        this.exchangeService = exchangeService;
+    }
 
     public void transferMoney(Account accountOne, Account accountTwo, Instrument moneyToTransfer) throws IllegalArgumentException {
 
@@ -18,21 +29,22 @@ public class PaymentService {
 
     private void doPayment(Account accountOne, Account accountTwo, Instrument moneyToTransfer) {
         accountOne.setBalance(new Instrument(calculateAmountInFirstAccount(accountOne, moneyToTransfer), moneyToTransfer.getCurrency()));
-        accountTwo.setBalance(new Instrument(calculateMoneyOnSecondAmount(accountTwo, moneyToTransfer), moneyToTransfer.getCurrency()));
+        accountTwo.setBalance(new Instrument(calculateMoneyOnSecondAccount(accountTwo, moneyToTransfer), moneyToTransfer.getCurrency()));
     }
 
     private void validatePayment(Account accountOne, Account accountTwo, Instrument moneyToTransfer) {
-        if (!doesCurrencyMatch(accountOne, accountTwo, moneyToTransfer)) {
-            throw new IllegalArgumentException(CORRENCY_DOESN_T_MATCH);
-        }
+      //  if (!doesCurrencyMatch(accountOne, accountTwo, moneyToTransfer)) {
+        //      throw new IllegalArgumentException(CURRENCY_DOESN_T_MATCH);
+       // }
 
         if (isEnoughMoneyOnFirstAccount(accountOne, moneyToTransfer)) {
             throw new IllegalArgumentException(NOT_ENOUGH_MONEY_MESSAGE);
         }
     }
 
-    private int calculateMoneyOnSecondAmount(Account accountTwo, Instrument moneyToTransfer) {
-        return accountTwo.getBalance().getAmount() + moneyToTransfer.getAmount();
+    private int calculateMoneyOnSecondAccount(Account accountTwo, Instrument moneyToTransfer) {
+        Instrument ins = exchangeService.calculateAmount(moneyToTransfer, accountTwo.getBalance().getCurrency());
+        return accountTwo.getBalance().getAmount() + ins.getAmount();
     }
 
     private int calculateAmountInFirstAccount(Account accountOne, Instrument moneyToTransfer) {
