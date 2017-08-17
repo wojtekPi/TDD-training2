@@ -1,5 +1,5 @@
 package bank;
 
 public enum Currency {
-    PLN, USD
+    PLN, USD, EUR
 }

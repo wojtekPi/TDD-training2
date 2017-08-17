@@ -1,9 +1,15 @@
 package bank;
 
+import org.junit.Before;
+import org.junit.Rule;
 import org.junit.Test;
+import org.mockito.Mock;
+import org.mockito.junit.MockitoJUnit;
+import org.mockito.junit.MockitoRule;
 
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Map;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Mockito.*;
@@ -13,6 +19,16 @@ import static org.mockito.Mockito.*;
  */
 
 public class MockingExamplesTest {
+
+    @Rule
+    public MockitoRule mockitoRule = MockitoJUnit.rule();
+
+    @Mock
+    private Map mapMock;
+
+    @Before
+    public void setUp() throws Exception {
+    }
 
     @Test
     public void listTest() throws Exception {
@@ -49,5 +65,12 @@ public class MockingExamplesTest {
         when(mockedLinkList.get(anyInt())).thenThrow(NullPointerException.class);
 
         mockedLinkList.get(7);
+    }
+
+    @Test
+    public void mockCreatedByAnnotationExample() throws Exception {
+        when(mapMock.get("Ala")).thenReturn("ma Kota");
+
+        assertThat(mapMock.get("Ala")).isEqualTo("ma Kota");
     }
 }

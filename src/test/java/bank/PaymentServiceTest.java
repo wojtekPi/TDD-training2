@@ -3,13 +3,16 @@ package bank;
 import junitparams.JUnitParamsRunner;
 import junitparams.Parameters;
 import org.junit.Before;
+import org.junit.Ignore;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.ExpectedException;
 import org.junit.runner.RunWith;
 import org.mockito.Answers;
 
+import static bank.Currency.EUR;
 import static bank.Currency.PLN;
+import static bank.Currency.USD;
 import static org.assertj.core.api.Assertions.*;
 import static org.mockito.Mockito.*;
 
@@ -70,41 +73,44 @@ public class PaymentServiceTest {
     public void shouldThrowExceptionWhenBalanceToLow() throws Exception {
         thrown.expect(IllegalArgumentException.class);
         thrown.expectMessage("I'm very sorry, but you don't have enough money...");
-        Account accountOne = new Account();
-        accountOne.setId(1);
-        accountOne.setBalance(new Instrument(0, PLN));
+        Account accountOne = createAccount(1, 0, PLN);
 
-        Account accountTwo = new Account();
-        accountTwo.setId(2);
-        accountTwo.setBalance(new Instrument(200, PLN));
+        Account accountTwo = createAccount(2, 200, PLN);
 
         testedObject.transferMoney(accountOne, accountTwo, new Instrument(1000, PLN));
     }
 
+    @Test
+    public void shouldNotTransferMoneyWhenBalanceToLow() throws Exception {
+        Account accountOne = createAccount(1, 0, PLN);
+
+        Account accountTwo = createAccount(2, 200, PLN);
+
+        assertThatExceptionOfType(IllegalArgumentException.class)
+                .isThrownBy(() -> testedObject.transferMoney
+                        (accountOne, accountTwo, new Instrument(1000, PLN)));
+        assertThat(accountOne.getBalance()).isEqualTo(new Instrument(0, PLN));
+        assertThat(accountTwo.getBalance()).isEqualTo(new Instrument(200, PLN));
+    }
+
+    @Ignore
     @Test(expected = IllegalArgumentException.class)
     public void shouldThrowExceptionWhenCurrenciesAreDifferent() throws Exception {
-        Account accountOne = new Account();
-        accountOne.setId(1);
-        accountOne.setBalance(new Instrument(0, Currency.USD));
+        Account accountOne = createAccount(1, 0, USD);
 
-        Account accountTwo = new Account();
-        accountTwo.setId(2);
-        accountTwo.setBalance(new Instrument(200, PLN));
+        Account accountTwo = createAccount(2, 200, PLN);
 
         testedObject.transferMoney(accountOne, accountTwo, new Instrument(100, PLN));
         //#INFO: We are not able to check  here anything. When exception is thrown,
         // then no followed instructions will be reached.
     }
 
+    @Ignore
     @Test
     public void shouldNotTransferMoneyWhenCurrenciesDoesntMatch() throws Exception {
-        Account accountOne = new Account();
-        accountOne.setId(1);
-        accountOne.setBalance(new Instrument(0, Currency.USD));
+        Account accountOne = createAccount(1, 0, USD);
 
-        Account accountTwo = new Account();
-        accountTwo.setId(2);
-        accountTwo.setBalance(new Instrument(200, PLN));
+        Account accountTwo = createAccount(2, 200, PLN);
         try {
             testedObject.transferMoney(accountOne, accountTwo, new Instrument(100, PLN));
         } catch (IllegalArgumentException e) {
@@ -112,6 +118,7 @@ public class PaymentServiceTest {
             fail("WrongExceptionThrown");
         }
         assertThat(accountOne.getBalance().getAmount()).isEqualTo(0);
+        assertThat(accountTwo.getBalance().getAmount()).isEqualTo(200);
 
     }
 
@@ -137,4 +144,74 @@ public class PaymentServiceTest {
         verify(instrumentMock, never()).setAmount(anyInt());
         verify(accountOneMock, never()).setBalance(any(Instrument.class));
     }
+
+    @Test
+    public void shoulTransferPLNfromFirstAcountToAccountWithUSD() throws Exception {
+        Account accountOne = createAccount(1, 0, PLN);
+
+        Account accountTwo = createAccount(2, 200, USD);
+
+        ExchangeServiceI exchangeServiceMock = mock(ExchangeServiceI.class);
+        testedObject.setExchangeService(exchangeServiceMock);
+
+        when(exchangeServiceMock.calculateAmount(any(Instrument.class), eq(USD)))
+                .thenReturn(new Instrument(30, USD));
+
+        testedObject.transferMoney(accountOne, accountTwo, new Instrument(100, PLN));
+
+        assertThat(accountOne.getBalance().getAmount()).isEqualTo(-100);
+        assertThat(accountTwo.getBalance().getAmount()).isEqualTo(230);
+        verify(exchangeServiceMock).calculateAmount(any(Instrument.class), eq(USD));
+    }
+
+    private Account createAccount(int id, int amount, Currency currency) {
+        Account accountOne = new Account();
+        accountOne.setId(id);
+        accountOne.setBalance(new Instrument(amount, currency));
+        return accountOne;
+    }
+
+    @Test
+    public void shouldThrowNPEwhenconversionrequiredAndExchangeServiceNotSet() throws Exception {
+        Account accountOne = createAccount(1, 2, PLN);
+        Account accountTwo = createAccount(2, 2, USD);
+        assertThatExceptionOfType(NullPointerException.class)
+                .isThrownBy(() -> testedObject.transferMoney(accountOne, accountTwo, HUNDRED_PLN));
+
+        assertThat(accountOne.getBalance()).isEqualTo(TWO_PLN);
+        assertThat(accountTwo.getBalance()).isEqualTo(new Instrument(2, USD));
+    }
+
+    private Object[][] parametersForShouldTransferMoneyWhenDifferentCurrencies() {
+        return new Object[][]{
+                {createAccount(1, 1, PLN), createAccount(2, 1, USD),
+                        new Instrument(100, PLN), new Instrument(-99, PLN), new Instrument(56, USD)},
+                {createAccount(1, 1, PLN), createAccount(2, 1, USD),
+                        new Instrument(10, USD), new Instrument(-32, PLN), new Instrument(11, USD)},
+                {createAccount(1, 1, PLN), createAccount(2, 1, USD),
+                        new Instrument(30, EUR), new Instrument(-32, PLN), new Instrument(56, USD)},
+        };
+    }
+
+    @Parameters
+    @Test
+    public void shouldTransferMoneyWhenDifferentCurrencies(Account accountOne, Account accountTwo,
+                                                           Instrument moneyToTransfer, Instrument expectedBalanceInAccountOne,
+                                                           Instrument expectedBalanceInAccountTwo) {
+        ExchangeServiceI exchangeServiceMock = mock(ExchangeServiceI.class);
+        testedObject.setExchangeService(exchangeServiceMock);
+
+        when(exchangeServiceMock.calculateAmount(moneyToTransfer, accountOne.getBalance().getCurrency()))
+                .thenReturn(new Instrument(33, accountOne.getBalance().getCurrency()));
+
+        when(exchangeServiceMock.calculateAmount(moneyToTransfer, accountTwo.getBalance().getCurrency()))
+                .thenReturn(new Instrument(55, accountTwo.getBalance().getCurrency()));
+
+
+        testedObject.transferMoney(accountOne, accountTwo, moneyToTransfer);
+
+        assertThat(accountOne.getBalance()).isEqualTo(expectedBalanceInAccountOne);
+        assertThat(accountTwo.getBalance()).isEqualTo(expectedBalanceInAccountTwo);
+    }
+
 }
