@@ -147,7 +147,7 @@ public class PaymentServiceTest {
 
     @Test
     public void shoulTransferPLNfromFirstAcountToAccountWithEuro() throws Exception {
-        Account accountOne = createAccount(1, 0, Currency.PLN);
+        Account accountOne = createAccount(1, 0, PLN);
 
         Account accountTwo = createAccount(2, 200, USD);
 

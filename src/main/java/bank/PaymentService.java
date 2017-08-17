@@ -70,10 +70,6 @@ public class PaymentService {
         return calculateAmountInFirstAccount(accountOne, moneyToTransfer) < BALANCE_LIMIT;
     }
 
-    private boolean doesCurrencyMatch(Account accountOne, Account accountTwo, Instrument moneyToTransfer) {
-        return accountOne.getBalance().getCurrency() == moneyToTransfer.getCurrency();
-    }
-
     public void setExchangeService(ExchangeServiceI exchangeService) {
         this.exchangeService = exchangeService;
     }
